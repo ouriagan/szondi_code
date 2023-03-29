@@ -1,0 +1,92 @@
+---
+title: "szondi_code"
+author: "Benjamin Thiry"
+date: "18/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(readxl) 
+library(ggplot2)
+szondisynthese <- read_excel("C:/Users/Ouriagan/OneDrive/szondi/szondisynthese.xlsx") 
+attach(szondisynthese) 
+code1.df <- data.frame(onehm,onehp)
+code1.df <- code1.df %>% mutate(onehcode = case_when(onehp+onehm <= 1 ~ '0',
+          onehp == 2 & onehm == 2 ~ '±',
+			    onehp == 1 & onehm == 1 ~ '0',
+          onehp == 2 & onehm == 3 ~ '±',
+			    onehp == 3 & onehm == 2 ~ '±',
+			    onehp == 2 & onehm == 0 ~ '+',
+			    onehp == 2 & onehm == 1 ~ '+',
+			    onehp == 3 & onehm == 0 ~ '+',
+			    onehp == 3 & onehm == 1 ~ '+',
+			    onehp == 0 & onehm == 2 ~ '-',
+			    onehp == 1 & onehm == 2 ~ '-',
+			    onehp == 0 & onehm == 3 ~ '-',
+			    onehp == 1 & onehm == 3 ~ '-',
+			    onehp == 4 & onehm == 0 ~ '+!',
+			    onehp == 4 & onehm == 1 ~ '+!',
+			    onehp == 0 & onehm == 4 ~ '-!',
+			    onehp == 1 & onehm == 4 ~ '-!',
+		      onehp == 5 & onehm == 0 ~ '+!!',
+			    onehp == 5 & onehm == 1 ~ '+!!',
+			    onehp == 0 & onehm == 5 ~ '-!!',
+			    onehp == 5 & onehm == 1 ~ '-!!',
+			    onehp == 6 & onehm == 0 ~ '+!!!',
+			    onehp == 6 & onehm == 1 ~ '+!!!',
+			    onehp == 0 & onehm == 6 ~ '-!!!',
+			    onehp == 1 & onehm == 6 ~ '-!!!',
+			    onehp == 3 & onehm == 3 ~ '±!',
+			    onehp == 4 & onehm == 2 ~ '±!',
+			    onehp == 2 & onehm == 4 ~ '±!'
+                            ))
+
+onehcodetable <- table(code1.df$onehcode)
+
+code2.df <- data.frame(twohm,twohp)
+code2.df <- code2.df %>% mutate(twohcode = case_when(twohp+twohm <= 1 ~ '0',
+          twohp == 2 & twohm == 2 ~ '±',
+			    twohp == 1 & twohm == 1 ~ '0',
+          twohp == 2 & twohm == 3 ~ '±',
+			    twohp == 3 & twohm == 2 ~ '±',
+			    twohp == 2 & twohm == 0 ~ '+',
+			    twohp == 2 & twohm == 1 ~ '+',
+			    twohp == 3 & twohm == 0 ~ '+',
+			    twohp == 3 & twohm == 1 ~ '+',
+			    twohp == 0 & twohm == 2 ~ '-',
+			    twohp == 1 & twohm == 2 ~ '-',
+			    twohp == 0 & twohm == 3 ~ '-',
+			    twohp == 1 & twohm == 3 ~ '-',
+			    twohp == 4 & twohm == 0 ~ '+!',
+			    twohp == 4 & twohm == 1 ~ '+!',
+			    twohp == 0 & twohm == 4 ~ '-!',
+			    twohp == 1 & twohm == 4 ~ '-!',
+		      twohp == 5 & twohm == 0 ~ '+!!',
+			    twohp == 5 & twohm == 1 ~ '+!!',
+			    twohp == 0 & twohm == 5 ~ '-!!',
+			    twohp == 5 & twohm == 1 ~ '-!!',
+			    twohp == 6 & twohm == 0 ~ '+!!!',
+			    twohp == 6 & twohm == 1 ~ '+!!!',
+			    twohp == 0 & twohm == 6 ~ '-!!!',
+			    twohp == 1 & twohm == 6 ~ '-!!!',
+			    twohp == 3 & twohm == 3 ~ '±!',
+			    twohp == 4 & twohm == 2 ~ '±!',
+			    twohp == 2 & twohm == 4 ~ '±!'
+                            ))
+twohcodetable <- table(code2.df$twohcode)
+```
+
+# h
+
+```{r}
+lengthoneh <- length(onehm)
+plot(onehcodetable)
+pie(table(code1.df$onehcode))
+
+ggplot(code1.df, aes(x=factor(onehcode)))+          geom_bar(stat="count", width=0.7,fill="steelblue")+theme_minimal()
+
+ggplot(code2.df, aes(x=factor(twohcode)))+
+geom_bar(stat="count", width=0.7,fill="steelblue")+theme_minimal()
